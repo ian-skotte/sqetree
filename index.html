@@ -1,196 +1,194 @@
-<div class="sqe-tree">
+<div class="sqe-tool">
   <style>
-    .sqe-tree {
+    .sqe-tool {
       font-family: Arial, Helvetica, sans-serif;
-      max-width: 1100px;
+      max-width: 950px;
       margin: 0 auto;
       padding: 24px;
       color: #1f2933;
       line-height: 1.5;
     }
 
-    .sqe-tree * {
+    .sqe-tool * {
       box-sizing: border-box;
     }
 
     .sqe-header {
-      border-left: 6px solid #1f5f8b;
-      padding: 16px 20px;
       background: #f2f7fb;
-      margin-bottom: 24px;
+      border-left: 6px solid #1f5f8b;
       border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
     }
 
     .sqe-header h2 {
       margin: 0 0 8px;
-      font-size: 1.8rem;
       color: #12384f;
+      font-size: 1.75rem;
     }
 
     .sqe-header p {
       margin: 0;
-      font-size: 1rem;
     }
 
-    .sqe-section {
-      margin-bottom: 32px;
-      padding: 20px;
+    .sqe-card {
       border: 1px solid #d8e2ea;
       border-radius: 10px;
       background: #ffffff;
+      padding: 20px;
+      margin-bottom: 18px;
     }
 
-    .sqe-section h3 {
+    .sqe-card h3 {
       margin-top: 0;
       color: #12384f;
-      font-size: 1.35rem;
-      border-bottom: 2px solid #d8e2ea;
-      padding-bottom: 8px;
+      font-size: 1.25rem;
     }
 
-    .sqe-flow {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .sqe-box {
-      width: 100%;
-      max-width: 760px;
-      padding: 16px;
-      border-radius: 8px;
-      border: 2px solid #b9c9d6;
-      background: #ffffff;
-      text-align: center;
-    }
-
-    .sqe-box.question {
-      border-color: #1f5f8b;
-      background: #f2f7fb;
+    .sqe-question {
       font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
     }
 
-    .sqe-box.action {
-      border-color: #4b7f52;
+    .sqe-options {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .sqe-options button,
+    .sqe-reset,
+    .sqe-back {
+      border: 2px solid #1f5f8b;
+      background: #ffffff;
+      color: #12384f;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .sqe-options button:hover,
+    .sqe-options button:focus,
+    .sqe-reset:hover,
+    .sqe-reset:focus,
+    .sqe-back:hover,
+    .sqe-back:focus {
+      background: #e8f1f8;
+      outline: 3px solid #bcd7eb;
+      outline-offset: 2px;
+    }
+
+    .sqe-options button:active,
+    .sqe-reset:active,
+    .sqe-back:active {
+      background: #dbeaf5;
+    }
+
+    .sqe-result {
+      display: none;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-top: 18px;
+    }
+
+    .sqe-result h3 {
+      margin-top: 0;
+      font-size: 1.35rem;
+    }
+
+    .sqe-result.approved {
+      display: block;
+      border: 2px solid #4b7f52;
       background: #f1f8f2;
     }
 
-    .sqe-box.warning {
-      border-color: #b45309;
+    .sqe-result.warning {
+      display: block;
+      border: 2px solid #b45309;
       background: #fff7ed;
     }
 
-    .sqe-box.stop {
-      border-color: #9f1239;
+    .sqe-result.denied {
+      display: block;
+      border: 2px solid #9f1239;
       background: #fff1f2;
     }
 
-    .sqe-arrow {
-      font-size: 1.5rem;
-      color: #607080;
-      line-height: 1;
-    }
-
-    .sqe-branches {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 900px;
-      margin: 8px 0;
-    }
-
-    .sqe-branch {
-      padding: 16px;
+    .sqe-path {
+      background: #fafcfd;
       border: 1px solid #d8e2ea;
       border-radius: 8px;
-      background: #fafcfd;
+      padding: 12px;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
     }
 
-    .sqe-branch h4 {
-      margin-top: 0;
-      margin-bottom: 8px;
+    .sqe-path strong {
       color: #12384f;
-      font-size: 1.1rem;
     }
 
-    .sqe-branch ul {
-      margin: 8px 0 0 20px;
-      padding: 0;
-    }
-
-    .sqe-note {
-      padding: 14px 16px;
-      border-left: 5px solid #1f5f8b;
-      background: #f2f7fb;
-      border-radius: 6px;
-      margin: 16px 0;
-    }
-
-    .sqe-warning-note {
-      padding: 14px 16px;
-      border-left: 5px solid #b45309;
-      background: #fff7ed;
-      border-radius: 6px;
-      margin: 16px 0;
-    }
-
-    .sqe-table-wrapper {
-      overflow-x: auto;
+    .sqe-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
       margin-top: 16px;
     }
 
-    .sqe-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 680px;
+    .sqe-reset,
+    .sqe-back {
+      display: inline-block;
+      max-width: fit-content;
+      font-weight: bold;
     }
 
-    .sqe-table th,
-    .sqe-table td {
+    .sqe-reset {
+      border-color: #607080;
+      color: #1f2933;
+    }
+
+    .sqe-muted {
+      color: #52616f;
+      font-size: 0.95rem;
+    }
+
+    .sqe-alert {
+      background: #fff7ed;
+      border-left: 5px solid #b45309;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+
+    .sqe-list {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    .sqe-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .sqe-summary-table th,
+    .sqe-summary-table td {
       border: 1px solid #cfd9e2;
-      padding: 12px;
+      padding: 10px;
       text-align: left;
       vertical-align: top;
     }
 
-    .sqe-table th {
+    .sqe-summary-table th {
       background: #e8f1f8;
       color: #12384f;
     }
 
-    .sqe-table tr:nth-child(even) td {
-      background: #fafcfd;
-    }
-
-    .sqe-label {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .sqe-label.yes {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .sqe-label.no {
-      background: #ffe4e6;
-      color: #9f1239;
-    }
-
-    .sqe-label.review {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    @media (max-width: 760px) {
-      .sqe-tree {
+    @media (max-width: 650px) {
+      .sqe-tool {
         padding: 16px;
       }
 
@@ -198,12 +196,12 @@
         font-size: 1.45rem;
       }
 
-      .sqe-branches {
-        grid-template-columns: 1fr;
+      .sqe-card {
+        padding: 16px;
       }
 
-      .sqe-box {
-        text-align: left;
+      .sqe-summary-table {
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -211,321 +209,537 @@
   <div class="sqe-header">
     <h2>Special Qualifying Event Decision Tree</h2>
     <p>
-      Use this guide to help determine whether a request may qualify as a special qualifying event
-      due to loss of eligibility for other coverage or acquisition of a new dependent.
+      Answer each question to help determine whether a request may qualify as a special qualifying event.
     </p>
   </div>
 
-  <div class="sqe-section">
-    <h3>Start Here</h3>
+  <div class="sqe-path" aria-live="polite">
+    <strong>Your path:</strong>
+    <span id="sqePath">Start</span>
+  </div>
 
-    <div class="sqe-flow">
-      <div class="sqe-box question">
-        Is the request due to one of these events?
-      </div>
+  <div class="sqe-card" id="sqeQuestionCard">
+    <h3 id="sqeStepTitle">Step 1</h3>
+    <div class="sqe-question" id="sqeQuestion">
+      What caused the request?
+    </div>
 
-      <div class="sqe-arrow">↓</div>
+    <div class="sqe-options" id="sqeOptions">
+      <button type="button" data-next="loss" data-label="Loss of eligibility for other coverage">
+        Loss of eligibility for other coverage
+      </button>
+      <button type="button" data-next="dependent" data-label="Acquisition of a new dependent">
+        Acquisition of a new dependent
+      </button>
+      <button type="button" data-result="not-sqe" data-label="Another reason">
+        Another reason
+      </button>
+    </div>
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <h4>Loss of eligibility for other coverage</h4>
-          <p>
-            Use this path when an employee or dependent lost eligibility for other group insurance
-            coverage, TennCare or CHIP.
-          </p>
-        </div>
-
-        <div class="sqe-branch">
-          <h4>Acquisition of a new dependent</h4>
-          <p>
-            Use this path for marriage, birth, adoption, placement for adoption or court-ordered
-            legal guardianship.
-          </p>
-        </div>
-      </div>
-
-      <div class="sqe-box stop">
-        If neither event applies, the request may not qualify as an SQE. Review whether another
-        qualifying event applies or whether the change must wait until Annual Enrollment.
-      </div>
+    <div class="sqe-nav">
+      <button type="button" class="sqe-back" id="sqeBack" style="display:none;">
+        Back
+      </button>
+      <button type="button" class="sqe-reset" id="sqeReset">
+        Start over
+      </button>
     </div>
   </div>
 
-  <div class="sqe-section">
-    <h3>Path 1: Loss of Eligibility for Other Coverage</h3>
+  <div id="sqeResult" class="sqe-result" aria-live="polite"></div>
 
-    <div class="sqe-flow">
-      <div class="sqe-box question">
-        Did someone lose eligibility for other coverage?
-      </div>
+  <script>
+    (function () {
+      const steps = {
+        start: {
+          title: "Step 1",
+          question: "What caused the request?",
+          options: [
+            {
+              text: "Loss of eligibility for other coverage",
+              next: "loss",
+              label: "Loss of eligibility for other coverage"
+            },
+            {
+              text: "Acquisition of a new dependent",
+              next: "dependent",
+              label: "Acquisition of a new dependent"
+            },
+            {
+              text: "Another reason",
+              result: "not-sqe",
+              label: "Another reason"
+            }
+          ]
+        },
 
-      <div class="sqe-arrow">↓</div>
+        loss: {
+          title: "Loss of Eligibility",
+          question: "Did someone lose eligibility for other group insurance coverage, TennCare or CHIP?",
+          options: [
+            {
+              text: "Yes",
+              next: "loss-voluntary",
+              label: "Someone lost eligibility"
+            },
+            {
+              text: "No",
+              result: "not-loss",
+              label: "No loss of eligibility"
+            }
+          ]
+        },
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <span class="sqe-label no">No</span>
-          <p>
-            This is not an SQE for loss of eligibility. Review whether another qualifying event applies.
-          </p>
-        </div>
+        "loss-voluntary": {
+          title: "Loss of Eligibility",
+          question: "Was the loss voluntary?",
+          options: [
+            {
+              text: "Yes — voluntary cancellation, nonpayment of premiums or choosing to waive/decline/cancel coverage",
+              result: "voluntary-loss",
+              label: "Voluntary loss"
+            },
+            {
+              text: "No — the person lost eligibility involuntarily",
+              next: "who-lost",
+              label: "Involuntary loss"
+            }
+          ]
+        },
 
-        <div class="sqe-branch">
-          <span class="sqe-label yes">Yes</span>
-          <p>
-            Continue to the next question.
-          </p>
-        </div>
-      </div>
+        "who-lost": {
+          title: "Loss of Eligibility",
+          question: "Who lost eligibility?",
+          options: [
+            {
+              text: "Employee",
+              next: "employee-loss-deadline",
+              label: "Employee lost eligibility"
+            },
+            {
+              text: "Dependent only",
+              next: "dependent-loss-deadline",
+              label: "Dependent lost eligibility"
+            },
+            {
+              text: "Employee and dependent both lost eligibility",
+              next: "employee-loss-deadline",
+              label: "Employee and dependent lost eligibility"
+            }
+          ]
+        },
 
-      <div class="sqe-arrow">↓</div>
+        "employee-loss-deadline": {
+          title: "Loss of Eligibility",
+          question: "Was the completed application and required documentation received within 60 days of the loss?",
+          options: [
+            {
+              text: "Yes",
+              result: "employee-loss-approved",
+              label: "Received within 60 days"
+            },
+            {
+              text: "No",
+              result: "untimely-loss",
+              label: "Not received within 60 days"
+            }
+          ]
+        },
 
-      <div class="sqe-box question">
-        Was the loss voluntary?
-      </div>
+        "dependent-loss-deadline": {
+          title: "Loss of Eligibility",
+          question: "Was the completed application and required documentation received within 60 days of the loss?",
+          options: [
+            {
+              text: "Yes",
+              result: "dependent-loss-approved",
+              label: "Received within 60 days"
+            },
+            {
+              text: "No",
+              result: "untimely-loss",
+              label: "Not received within 60 days"
+            }
+          ]
+        },
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <span class="sqe-label yes">Yes</span>
-          <p>
-            This is not an SQE for loss of eligibility.
-          </p>
-          <ul>
-            <li>Voluntary cancellation does not qualify.</li>
-            <li>Coverage canceled for nonpayment of premiums does not qualify.</li>
-            <li>Choosing to waive, decline or cancel coverage during another plan’s enrollment period does not qualify.</li>
-          </ul>
-        </div>
+        dependent: {
+          title: "Acquisition of a New Dependent",
+          question: "How was the new dependent acquired?",
+          options: [
+            {
+              text: "Marriage",
+              next: "marriage-deadline",
+              label: "Marriage"
+            },
+            {
+              text: "Birth",
+              next: "birth-deadline",
+              label: "Birth"
+            },
+            {
+              text: "Adoption or placement for adoption",
+              next: "adoption-deadline",
+              label: "Adoption or placement for adoption"
+            },
+            {
+              text: "Court-ordered legal guardianship",
+              next: "guardianship-check",
+              label: "Legal guardianship"
+            }
+          ]
+        },
 
-        <div class="sqe-branch">
-          <span class="sqe-label no">No</span>
-          <p>
-            Continue to determine who lost eligibility.
-          </p>
-        </div>
-      </div>
+        "marriage-deadline": {
+          title: "Marriage",
+          question: "Was the completed application and required documentation received within 60 days of the marriage?",
+          options: [
+            {
+              text: "Yes",
+              result: "marriage-approved",
+              label: "Received within 60 days"
+            },
+            {
+              text: "No",
+              result: "untimely-dependent",
+              label: "Not received within 60 days"
+            }
+          ]
+        },
 
-      <div class="sqe-arrow">↓</div>
+        "birth-deadline": {
+          title: "Birth",
+          question: "When was the completed application and required documentation received?",
+          options: [
+            {
+              text: "Within 30 days of birth",
+              result: "birth-30-approved",
+              label: "Received within 30 days"
+            },
+            {
+              text: "31 to 60 days after birth",
+              result: "birth-60-approved",
+              label: "Received 31 to 60 days after birth"
+            },
+            {
+              text: "More than 60 days after birth",
+              result: "untimely-dependent",
+              label: "More than 60 days after birth"
+            }
+          ]
+        },
 
-      <div class="sqe-box question">
-        Who lost eligibility?
-      </div>
+        "adoption-deadline": {
+          title: "Adoption or Placement for Adoption",
+          question: "When was the completed application and required documentation received?",
+          options: [
+            {
+              text: "Within 30 days of adoption or placement",
+              result: "adoption-30-approved",
+              label: "Received within 30 days"
+            },
+            {
+              text: "31 to 60 days after adoption or placement",
+              result: "adoption-60-approved",
+              label: "Received 31 to 60 days after adoption or placement"
+            },
+            {
+              text: "More than 60 days after adoption or placement",
+              result: "untimely-dependent",
+              label: "More than 60 days after adoption or placement"
+            }
+          ]
+        },
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <h4>Employee lost eligibility</h4>
-          <p>
-            If the employee meets the loss-of-eligibility requirements, the employee may enroll.
-            Eligible dependents may also be added at that time.
-          </p>
-        </div>
+        "guardianship-check": {
+          title: "Legal Guardianship",
+          question: "Does the requested change correspond with the terms of the court-ordered guardianship?",
+          options: [
+            {
+              text: "Yes",
+              next: "guardianship-deadline",
+              label: "Matches guardianship order"
+            },
+            {
+              text: "No",
+              result: "guardianship-no",
+              label: "Does not match guardianship order"
+            }
+          ]
+        },
 
-        <div class="sqe-branch">
-          <h4>Dependent lost eligibility</h4>
-          <p>
-            If only a dependent lost eligibility, only that dependent may enroll. Other dependents
-            may enroll only if they also lost eligibility at the same time.
-          </p>
-        </div>
-      </div>
+        "guardianship-deadline": {
+          title: "Legal Guardianship",
+          question: "Was the completed application and required documentation received within 60 days of the guardianship order?",
+          options: [
+            {
+              text: "Yes",
+              result: "guardianship-approved",
+              label: "Received within 60 days"
+            },
+            {
+              text: "No",
+              result: "untimely-dependent",
+              label: "Not received within 60 days"
+            }
+          ]
+        }
+      };
 
-      <div class="sqe-box warning">
-        The enrollment opportunity follows the person who experienced the qualifying loss.
-      </div>
-    </div>
+      const results = {
+        "not-sqe": {
+          type: "warning",
+          title: "Review Needed",
+          body: `
+            <p>This request may not qualify as a special qualifying event under the loss-of-eligibility or new-dependent paths.</p>
+            <p>Review whether another qualifying event applies or whether the change must wait until Annual Enrollment.</p>
+          `
+        },
 
-    <div class="sqe-warning-note">
-      <strong>Important:</strong> If the employee did not lose eligibility, the employee does not
-      automatically gain enrollment rights just because a dependent lost coverage.
-    </div>
+        "not-loss": {
+          type: "warning",
+          title: "Not a Loss-of-Eligibility SQE",
+          body: `
+            <p>No loss of eligibility was identified.</p>
+            <p>Review whether another qualifying event applies.</p>
+          `
+        },
 
-    <div class="sqe-table-wrapper">
-      <table class="sqe-table">
-        <thead>
-          <tr>
-            <th>Who lost eligibility?</th>
-            <th>Who may enroll?</th>
-            <th>Reminder</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Employee</td>
-            <td>Employee and eligible dependents</td>
-            <td>The qualifying event is tied to the employee.</td>
-          </tr>
-          <tr>
-            <td>One dependent</td>
-            <td>Only that dependent</td>
-            <td>The employee does not gain enrollment rights from the dependent’s loss.</td>
-          </tr>
-          <tr>
-            <td>Multiple dependents</td>
-            <td>Only dependents who lost coverage at the same time</td>
-            <td>Other dependents may not be added unless they also lost eligibility.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        "voluntary-loss": {
+          type: "denied",
+          title: "Likely Not Eligible",
+          body: `
+            <p>Voluntary loss of coverage does not qualify as an SQE for loss of eligibility.</p>
+            <ul class="sqe-list">
+              <li>Voluntary cancellation does not qualify.</li>
+              <li>Coverage canceled for nonpayment of premiums does not qualify.</li>
+              <li>Choosing to waive, decline or cancel coverage during another plan’s enrollment period does not qualify.</li>
+            </ul>
+          `
+        },
 
-    <div class="sqe-note">
-      <strong>Coverage type reminder:</strong> The person may only enroll in the type of coverage
-      lost. For example, loss of medical coverage allows medical enrollment; loss of dental coverage
-      allows dental enrollment; loss of vision coverage allows vision enrollment.
-    </div>
+        "employee-loss-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Employee Lost Eligibility",
+          body: `
+            <p>The employee may enroll, and eligible dependents may also be added at that time.</p>
+            <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+            <p><strong>Reminder:</strong> The person may only enroll in the type of coverage lost, such as medical, dental or vision.</p>
+          `
+        },
 
-    <div class="sqe-flow">
-      <div class="sqe-box question">
-        Was the completed application and required documentation received within 60 days of the loss?
-      </div>
+        "dependent-loss-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Dependent Lost Eligibility",
+          body: `
+            <p>Only the dependent who lost coverage may enroll. Other dependents may enroll only if they also lost eligibility at the same time.</p>
+            <p><strong>Important:</strong> If the employee did not lose eligibility, the employee does not automatically gain enrollment rights based only on the dependent’s loss.</p>
+            <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+          `
+        },
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <span class="sqe-label yes">Yes</span>
-          <p>
-            Coverage begins the first day of the month after the completed application and required
-            documentation are received.
-          </p>
-        </div>
+        "untimely-loss": {
+          type: "denied",
+          title: "Likely Untimely",
+          body: `
+            <p>The completed application and required documentation were not received within 60 days of the loss of eligibility.</p>
+            <p>The request should generally be denied as untimely.</p>
+          `
+        },
 
-        <div class="sqe-branch">
-          <span class="sqe-label no">No</span>
-          <p>
-            The request should be denied as untimely.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+        "marriage-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Marriage",
+          body: `
+            <p>The employee may enroll in employee-only or family coverage and may add the new dependent and other eligible dependents.</p>
+            <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+          `
+        },
 
-  <div class="sqe-section">
-    <h3>Path 2: Acquisition of a New Dependent</h3>
+        "birth-30-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Birth Within 30 Days",
+          body: `
+            <p>Health coverage may be retroactive to the date of birth.</p>
+            <p><strong>Dental and vision:</strong> Coverage begins the first day of the month after the request is received.</p>
+          `
+        },
 
-    <div class="sqe-flow">
-      <div class="sqe-box question">
-        Did the employee acquire a new dependent?
-      </div>
+        "birth-60-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Birth Received 31 to 60 Days After Event",
+          body: `
+            <p>Coverage begins the first day of the following month.</p>
+            <p>This does not receive the same retroactive effective date treatment as requests received within 30 days.</p>
+          `
+        },
 
-      <div class="sqe-branches">
-        <div class="sqe-branch">
-          <span class="sqe-label no">No</span>
-          <p>
-            This path does not apply. Review whether another qualifying event applies.
-          </p>
-        </div>
+        "adoption-30-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Adoption or Placement Within 30 Days",
+          body: `
+            <p>Health coverage may be retroactive to the date of adoption or placement for adoption.</p>
+            <p><strong>Dental and vision:</strong> Coverage begins the first day of the month after the request is received.</p>
+          `
+        },
 
-        <div class="sqe-branch">
-          <span class="sqe-label yes">Yes</span>
-          <p>
-            Continue based on how the dependent was acquired.
-          </p>
-        </div>
-      </div>
-    </div>
+        "adoption-60-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Adoption or Placement Received 31 to 60 Days After Event",
+          body: `
+            <p>Coverage begins the first day of the following month.</p>
+            <p>This does not receive the same retroactive effective date treatment as requests received within 30 days.</p>
+          `
+        },
 
-    <div class="sqe-table-wrapper">
-      <table class="sqe-table">
-        <thead>
-          <tr>
-            <th>Event</th>
-            <th>Deadline</th>
-            <th>Effective date guidance</th>
-            <th>Additional reminder</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Marriage</td>
-            <td>Within 60 days</td>
-            <td>First day of the month after the completed application and documentation are received.</td>
-            <td>
-              Employee may enroll in employee-only or family coverage and may add the new dependent
-              and other eligible dependents.
-            </td>
-          </tr>
-          <tr>
-            <td>Legal guardianship</td>
-            <td>Within 60 days</td>
-            <td>First day of the month after the completed application and documentation are received.</td>
-            <td>
-              The change must correspond with the guardianship order. Employee-only coverage is not permitted.
-            </td>
-          </tr>
-          <tr>
-            <td>Birth</td>
-            <td>Preferably within 30 days; no later than 60 days</td>
-            <td>
-              If received within 30 days, health coverage may be retroactive to the date of birth.
-              If received 31-60 days after the event, coverage begins the first day of the following month.
-            </td>
-            <td>
-              Dental and vision coverage begin the first day of the month after the request is received.
-            </td>
-          </tr>
-          <tr>
-            <td>Adoption or placement for adoption</td>
-            <td>Preferably within 30 days; no later than 60 days</td>
-            <td>
-              If received within 30 days, health coverage may be retroactive to the date of adoption
-              or placement. If received 31-60 days after the event, coverage begins the first day of
-              the following month.
-            </td>
-            <td>
-              Dental and vision coverage begin the first day of the month after the request is received.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        "guardianship-approved": {
+          type: "approved",
+          title: "Likely Qualifies — Legal Guardianship",
+          body: `
+            <p>The requested change may be approved if it corresponds with the terms of the court-ordered guardianship.</p>
+            <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+            <p><strong>Reminder:</strong> Employee-only coverage is not permitted for this event.</p>
+          `
+        },
 
-    <div class="sqe-warning-note">
-      <strong>Timing reminder:</strong> Requests submitted after the allowed enrollment period should
-      be denied as untimely.
-    </div>
-  </div>
+        "guardianship-no": {
+          type: "denied",
+          title: "Likely Not Eligible",
+          body: `
+            <p>The requested change does not correspond with the terms of the court-ordered guardianship.</p>
+            <p>The request may not be approved under this SQE path.</p>
+          `
+        },
 
-  <div class="sqe-section">
-    <h3>Quick ABC Checklist</h3>
+        "untimely-dependent": {
+          type: "denied",
+          title: "Likely Untimely",
+          body: `
+            <p>The completed application and required documentation were not received within the required enrollment period.</p>
+            <p>The request should generally be denied as untimely.</p>
+          `
+        }
+      };
 
-    <div class="sqe-table-wrapper">
-      <table class="sqe-table">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Why it matters</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>What event caused the request?</td>
-            <td>Determines whether this is a loss-of-eligibility event or new-dependent event.</td>
-          </tr>
-          <tr>
-            <td>Who experienced the event?</td>
-            <td>Determines who may enroll.</td>
-          </tr>
-          <tr>
-            <td>Was the loss voluntary?</td>
-            <td>Voluntary loss of coverage does not qualify as an SQE.</td>
-          </tr>
-          <tr>
-            <td>Was the request submitted on time?</td>
-            <td>Most deadlines are 60 days; birth, adoption and placement have special 30-day retroactive rules.</td>
-          </tr>
-          <tr>
-            <td>Was required documentation submitted?</td>
-            <td>The application is not complete until required documentation is received.</td>
-          </tr>
-          <tr>
-            <td>What type of coverage was lost?</td>
-            <td>The person may only enroll in the type of coverage lost.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+      const titleEl = document.getElementById("sqeStepTitle");
+      const questionEl = document.getElementById("sqeQuestion");
+      const optionsEl = document.getElementById("sqeOptions");
+      const resultEl = document.getElementById("sqeResult");
+      const pathEl = document.getElementById("sqePath");
+      const backBtn = document.getElementById("sqeBack");
+      const resetBtn = document.getElementById("sqeReset");
 
-  <div class="sqe-note">
-    <strong>Premium reminder:</strong> Premiums are not prorated. If coverage is approved, the member
-    must pay the premium for the full month in which coverage begins.
-  </div>
+      let currentStep = "start";
+      let history = [];
+      let pathLabels = ["Start"];
+
+      function renderStep(stepKey) {
+        const step = steps[stepKey];
+
+        if (!step) {
+          return;
+        }
+
+        currentStep = stepKey;
+
+        titleEl.textContent = step.title;
+        questionEl.textContent = step.question;
+        optionsEl.innerHTML = "";
+
+        resultEl.className = "sqe-result";
+        resultEl.innerHTML = "";
+
+        step.options.forEach(function (option) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = option.text;
+
+          button.addEventListener("click", function () {
+            history.push(currentStep);
+            pathLabels.push(option.label);
+            updatePath();
+
+            if (option.next) {
+              renderStep(option.next);
+            }
+
+            if (option.result) {
+              renderResult(option.result);
+            }
+          });
+
+          optionsEl.appendChild(button);
+        });
+
+        backBtn.style.display = history.length ? "inline-block" : "none";
+      }
+
+      function renderResult(resultKey) {
+        const result = results[resultKey];
+
+        if (!result) {
+          return;
+        }
+
+        titleEl.textContent = "Result";
+        questionEl.textContent = "Review the outcome below.";
+        optionsEl.innerHTML = "";
+
+        resultEl.className = "sqe-result " + result.type;
+        resultEl.innerHTML = `
+          <h3>${result.title}</h3>
+          ${result.body}
+          <div class="sqe-alert">
+            <strong>Reminder:</strong> This tool is a guide. Final determinations should be based on the applicable plan document, required documentation and Benefits Administration review.
+          </div>
+        `;
+
+        backBtn.style.display = history.length ? "inline-block" : "none";
+      }
+
+      function updatePath() {
+        pathEl.textContent = pathLabels.join(" → ");
+      }
+
+      function resetTool() {
+        currentStep = "start";
+        history = [];
+        pathLabels = ["Start"];
+        updatePath();
+        renderStep("start");
+      }
+
+      backBtn.addEventListener("click", function () {
+        if (!history.length) {
+          return;
+        }
+
+        history.pop();
+        pathLabels.pop();
+        updatePath();
+
+        const previousStep = history.length ? history[history.length - 1] : "start";
+
+        /*
+          Because history stores the path taken before the current screen,
+          this rebuilds the previous question more reliably by walking backward.
+        */
+        if (pathLabels.length === 1) {
+          renderStep("start");
+          history = [];
+          return;
+        }
+
+        const stepToShow = history[history.length - 1] || "start";
+        history.pop();
+        pathLabels.pop();
+        updatePath();
+        renderStep(stepToShow);
+      });
+
+      resetBtn.addEventListener("click", resetTool);
+
+      renderStep("start");
+    })();
+  </script>
 </div>
