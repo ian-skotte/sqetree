@@ -27,10 +27,6 @@
       font-size: 1.75rem;
     }
 
-    .sqe-header p {
-      margin: 0;
-    }
-
     .sqe-card {
       border: 1px solid #d8e2ea;
       border-radius: 10px;
@@ -58,8 +54,7 @@
     }
 
     .sqe-options button,
-    .sqe-reset,
-    .sqe-back {
+    .sqe-reset {
       border: 2px solid #1f5f8b;
       background: #ffffff;
       color: #12384f;
@@ -68,24 +63,15 @@
       text-align: left;
       cursor: pointer;
       font-size: 1rem;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
 
     .sqe-options button:hover,
     .sqe-options button:focus,
     .sqe-reset:hover,
-    .sqe-reset:focus,
-    .sqe-back:hover,
-    .sqe-back:focus {
+    .sqe-reset:focus {
       background: #e8f1f8;
       outline: 3px solid #bcd7eb;
       outline-offset: 2px;
-    }
-
-    .sqe-options button:active,
-    .sqe-reset:active,
-    .sqe-back:active {
-      background: #dbeaf5;
     }
 
     .sqe-result {
@@ -93,11 +79,6 @@
       border-radius: 10px;
       padding: 18px 20px;
       margin-top: 18px;
-    }
-
-    .sqe-result h3 {
-      margin-top: 0;
-      font-size: 1.35rem;
     }
 
     .sqe-result.approved {
@@ -131,28 +112,31 @@
       color: #12384f;
     }
 
-    .sqe-nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
-    .sqe-reset,
-    .sqe-back {
-      display: inline-block;
-      max-width: fit-content;
-      font-weight: bold;
-    }
-
     .sqe-reset {
+      display: inline-block;
+      margin-top: 16px;
+      font-weight: bold;
       border-color: #607080;
       color: #1f2933;
     }
 
-    .sqe-muted {
-      color: #52616f;
-      font-size: 0.95rem;
+    .sqe-list {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    .sqe-docs {
+      background: #ffffff;
+      border: 1px solid #cfd9e2;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .sqe-docs h4 {
+      margin: 0 0 8px;
+      color: #12384f;
+      font-size: 1.05rem;
     }
 
     .sqe-alert {
@@ -161,30 +145,6 @@
       border-radius: 6px;
       padding: 12px 14px;
       margin-top: 14px;
-    }
-
-    .sqe-list {
-      margin: 10px 0 0 20px;
-      padding: 0;
-    }
-
-    .sqe-summary-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 16px;
-    }
-
-    .sqe-summary-table th,
-    .sqe-summary-table td {
-      border: 1px solid #cfd9e2;
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .sqe-summary-table th {
-      background: #e8f1f8;
-      color: #12384f;
     }
 
     @media (max-width: 650px) {
@@ -198,10 +158,6 @@
 
       .sqe-card {
         padding: 16px;
-      }
-
-      .sqe-summary-table {
-        font-size: 0.95rem;
       }
     }
   </style>
@@ -220,30 +176,16 @@
 
   <div class="sqe-card" id="sqeQuestionCard">
     <h3 id="sqeStepTitle">Step 1</h3>
+
     <div class="sqe-question" id="sqeQuestion">
       What caused the request?
     </div>
 
-    <div class="sqe-options" id="sqeOptions">
-      <button type="button" data-next="loss" data-label="Loss of eligibility for other coverage">
-        Loss of eligibility for other coverage
-      </button>
-      <button type="button" data-next="dependent" data-label="Acquisition of a new dependent">
-        Acquisition of a new dependent
-      </button>
-      <button type="button" data-result="not-sqe" data-label="Another reason">
-        Another reason
-      </button>
-    </div>
+    <div class="sqe-options" id="sqeOptions"></div>
 
-    <div class="sqe-nav">
-      <button type="button" class="sqe-back" id="sqeBack" style="display:none;">
-        Back
-      </button>
-      <button type="button" class="sqe-reset" id="sqeReset">
-        Start over
-      </button>
-    </div>
+    <button type="button" class="sqe-reset" id="sqeReset">
+      Start over
+    </button>
   </div>
 
   <div id="sqeResult" class="sqe-result" aria-live="polite"></div>
@@ -258,12 +200,12 @@
             {
               text: "Loss of eligibility for other coverage",
               next: "loss",
-              label: "Loss of eligibility for other coverage"
+              label: "Loss of eligibility"
             },
             {
               text: "Acquisition of a new dependent",
               next: "dependent",
-              label: "Acquisition of a new dependent"
+              label: "Acquisition of new dependent"
             },
             {
               text: "Another reason",
@@ -295,7 +237,7 @@
           question: "Was the loss voluntary?",
           options: [
             {
-              text: "Yes — voluntary cancellation, nonpayment of premiums or choosing to waive/decline/cancel coverage",
+              text: "Yes — voluntary cancellation, nonpayment of premiums or choosing to waive, decline or cancel coverage",
               result: "voluntary-loss",
               label: "Voluntary loss"
             },
@@ -380,7 +322,7 @@
             {
               text: "Adoption or placement for adoption",
               next: "adoption-deadline",
-              label: "Adoption or placement for adoption"
+              label: "Adoption or placement"
             },
             {
               text: "Court-ordered legal guardianship",
@@ -486,6 +428,76 @@
         }
       };
 
+      const documentation = {
+        loss: `
+          <div class="sqe-docs">
+            <h4>Documentation needed</h4>
+            <p>Written documentation from an employer, former employer, insurance company or former insurance company on company letterhead that lists:</p>
+            <ul class="sqe-list">
+              <li>Names of covered participants.</li>
+              <li>Dates of coverage, including coverage at the time coverage in this plan was declined.</li>
+              <li>Types of coverage, such as medical, dental or vision.</li>
+              <li>Each participant who lost eligibility for coverage.</li>
+              <li>The date eligibility was lost.</li>
+              <li>The reason eligibility was lost.</li>
+            </ul>
+          </div>
+        `,
+
+        marriage: `
+          <div class="sqe-docs">
+            <h4>Documentation needed</h4>
+            <ul class="sqe-list">
+              <li>Marriage certificate.</li>
+              <li>Birth certificate for a child or stepchild, if adding a child.</li>
+              <li>Secondary document to validate marriage, such as one of the following:
+                <ul class="sqe-list">
+                  <li>Bank statement issued within the last six months with both names.</li>
+                  <li>Mortgage statement issued within the last six months with both names.</li>
+                  <li>Residential lease agreement within the current terms with both names.</li>
+                  <li>Credit card statement issued within the last six months with both names.</li>
+                  <li>Property tax statement issued within the last 12 months with both names.</li>
+                  <li>First page of the most recent federal tax return showing married filing jointly or married filing separately with the spouse’s name.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        `,
+
+        birth: `
+          <div class="sqe-docs">
+            <h4>Documentation needed</h4>
+            <ul class="sqe-list">
+              <li>Birth certificate.</li>
+              <li>Mother’s copy is acceptable for a newborn.</li>
+            </ul>
+          </div>
+        `,
+
+        adoption: `
+          <div class="sqe-docs">
+            <h4>Documentation needed</h4>
+            <ul class="sqe-list">
+              <li>Birth certificate, if available.</li>
+              <li>Final order of adoption; or</li>
+              <li>Order of custody in anticipation of adoption.</li>
+            </ul>
+          </div>
+        `,
+
+        guardianship: `
+          <div class="sqe-docs">
+            <h4>Documentation needed</h4>
+            <ul class="sqe-list">
+              <li>Birth certificate.</li>
+              <li>Order of guardianship requiring financial support and provision of insurance coverage.</li>
+              <li>The guardianship order must include the date of the guardianship period.</li>
+              <li>Certification of Eligibility for Dependents Placed with Head of Contract by Valid Placement Order, or Dependent Eligibility Certification for Dependent with Expired Placement Order.</li>
+            </ul>
+          </div>
+        `
+      };
+
       const results = {
         "not-sqe": {
           type: "warning",
@@ -523,8 +535,10 @@
           title: "Likely Qualifies — Employee Lost Eligibility",
           body: `
             <p>The employee may enroll, and eligible dependents may also be added at that time.</p>
+            <p><strong>Deadline:</strong> The completed application and required documentation must be received within 60 days of the loss.</p>
             <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
-            <p><strong>Reminder:</strong> The person may only enroll in the type of coverage lost, such as medical, dental or vision.</p>
+            <p><strong>Coverage type reminder:</strong> The person may only enroll in the type of coverage lost, such as medical, dental or vision.</p>
+            ${documentation.loss}
           `
         },
 
@@ -534,7 +548,9 @@
           body: `
             <p>Only the dependent who lost coverage may enroll. Other dependents may enroll only if they also lost eligibility at the same time.</p>
             <p><strong>Important:</strong> If the employee did not lose eligibility, the employee does not automatically gain enrollment rights based only on the dependent’s loss.</p>
+            <p><strong>Deadline:</strong> The completed application and required documentation must be received within 60 days of the loss.</p>
             <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+            ${documentation.loss}
           `
         },
 
@@ -544,6 +560,7 @@
           body: `
             <p>The completed application and required documentation were not received within 60 days of the loss of eligibility.</p>
             <p>The request should generally be denied as untimely.</p>
+            ${documentation.loss}
           `
         },
 
@@ -552,7 +569,9 @@
           title: "Likely Qualifies — Marriage",
           body: `
             <p>The employee may enroll in employee-only or family coverage and may add the new dependent and other eligible dependents.</p>
+            <p><strong>Deadline:</strong> The completed application and required documentation must be received within 60 days of the marriage.</p>
             <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
+            ${documentation.marriage}
           `
         },
 
@@ -562,6 +581,7 @@
           body: `
             <p>Health coverage may be retroactive to the date of birth.</p>
             <p><strong>Dental and vision:</strong> Coverage begins the first day of the month after the request is received.</p>
+            ${documentation.birth}
           `
         },
 
@@ -571,6 +591,7 @@
           body: `
             <p>Coverage begins the first day of the following month.</p>
             <p>This does not receive the same retroactive effective date treatment as requests received within 30 days.</p>
+            ${documentation.birth}
           `
         },
 
@@ -580,6 +601,7 @@
           body: `
             <p>Health coverage may be retroactive to the date of adoption or placement for adoption.</p>
             <p><strong>Dental and vision:</strong> Coverage begins the first day of the month after the request is received.</p>
+            ${documentation.adoption}
           `
         },
 
@@ -589,6 +611,7 @@
           body: `
             <p>Coverage begins the first day of the following month.</p>
             <p>This does not receive the same retroactive effective date treatment as requests received within 30 days.</p>
+            ${documentation.adoption}
           `
         },
 
@@ -597,8 +620,10 @@
           title: "Likely Qualifies — Legal Guardianship",
           body: `
             <p>The requested change may be approved if it corresponds with the terms of the court-ordered guardianship.</p>
+            <p><strong>Deadline:</strong> The completed application and required documentation must be received within 60 days of the guardianship order.</p>
             <p><strong>Effective date:</strong> Coverage begins the first day of the month after the completed application and required documentation are received.</p>
             <p><strong>Reminder:</strong> Employee-only coverage is not permitted for this event.</p>
+            ${documentation.guardianship}
           `
         },
 
@@ -608,6 +633,7 @@
           body: `
             <p>The requested change does not correspond with the terms of the court-ordered guardianship.</p>
             <p>The request may not be approved under this SQE path.</p>
+            ${documentation.guardianship}
           `
         },
 
@@ -626,26 +652,16 @@
       const optionsEl = document.getElementById("sqeOptions");
       const resultEl = document.getElementById("sqeResult");
       const pathEl = document.getElementById("sqePath");
-      const backBtn = document.getElementById("sqeBack");
       const resetBtn = document.getElementById("sqeReset");
 
-      let currentStep = "start";
-      let history = [];
       let pathLabels = ["Start"];
 
       function renderStep(stepKey) {
         const step = steps[stepKey];
 
-        if (!step) {
-          return;
-        }
-
-        currentStep = stepKey;
-
         titleEl.textContent = step.title;
         questionEl.textContent = step.question;
         optionsEl.innerHTML = "";
-
         resultEl.className = "sqe-result";
         resultEl.innerHTML = "";
 
@@ -655,7 +671,6 @@
           button.textContent = option.text;
 
           button.addEventListener("click", function () {
-            history.push(currentStep);
             pathLabels.push(option.label);
             updatePath();
 
@@ -670,16 +685,10 @@
 
           optionsEl.appendChild(button);
         });
-
-        backBtn.style.display = history.length ? "inline-block" : "none";
       }
 
       function renderResult(resultKey) {
         const result = results[resultKey];
-
-        if (!result) {
-          return;
-        }
 
         titleEl.textContent = "Result";
         questionEl.textContent = "Review the outcome below.";
@@ -693,8 +702,6 @@
             <strong>Reminder:</strong> This tool is a guide. Final determinations should be based on the applicable plan document, required documentation and Benefits Administration review.
           </div>
         `;
-
-        backBtn.style.display = history.length ? "inline-block" : "none";
       }
 
       function updatePath() {
@@ -702,40 +709,10 @@
       }
 
       function resetTool() {
-        currentStep = "start";
-        history = [];
         pathLabels = ["Start"];
         updatePath();
         renderStep("start");
       }
-
-      backBtn.addEventListener("click", function () {
-        if (!history.length) {
-          return;
-        }
-
-        history.pop();
-        pathLabels.pop();
-        updatePath();
-
-        const previousStep = history.length ? history[history.length - 1] : "start";
-
-        /*
-          Because history stores the path taken before the current screen,
-          this rebuilds the previous question more reliably by walking backward.
-        */
-        if (pathLabels.length === 1) {
-          renderStep("start");
-          history = [];
-          return;
-        }
-
-        const stepToShow = history[history.length - 1] || "start";
-        history.pop();
-        pathLabels.pop();
-        updatePath();
-        renderStep(stepToShow);
-      });
 
       resetBtn.addEventListener("click", resetTool);
 
